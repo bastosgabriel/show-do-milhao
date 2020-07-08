@@ -5,17 +5,17 @@ from question import Question
 def switch(input):
     if input in 'cC':
         # Run main game
-        Game.run()
-        # View.draw_game_end(win_or_loose)
+        win_or_loose = Game.run()
+        View.draw_game_end(win_or_loose)
 
+        return
     elif input in 'rR':
         # Show the rules
-
-    else:
-        # Do the default
+        return
 
 while True:
-    # view.draw_main_menu()
+    View.draw_main_menu()
+    
     
     switch(input())
     
