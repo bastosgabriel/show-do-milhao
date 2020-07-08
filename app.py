@@ -2,18 +2,22 @@ from game import Game
 from view import View
 from question import Question
 
-def switch(input):
-    if input in 'cC':
+while True:
+    View.draw_main_menu()
+    
+    user_input = input()
+
+    if user_input in 'cC':
         # Run main game
         win_or_loose = Game.run()
         View.draw_game_end(win_or_loose)
-        return
+        input()
+        
 
-    elif input in 'rR':
+    elif user_input in 'rR':
         # Show the rules
         View.draw_rules()
-        return
-
-while True:
-    View.draw_main_menu()
-    switch(input())  
+    
+    elif user_input in 'fF':
+        break
+    

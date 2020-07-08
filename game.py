@@ -4,6 +4,12 @@ import random
 
 class Game():
     
+    '''
+    This method is responsible for the main game logic, returns a variable called win_or_loose
+    win_or_loose = 1 if you won
+    win_or_loose = -1 if you lost
+    win_or_loose = 0 if you decided to stop the game
+    '''
     @staticmethod
     def run():
         _round = 1
@@ -15,6 +21,7 @@ class Game():
 
             View.draw_question(_round, current_question)
 
+            # Gets validated user input
             while True:
                 try:
                     user_answer = int(input())
@@ -33,11 +40,21 @@ class Game():
             # If answer is correct
             if Game.check_answer(current_question, user_answer):
                 View.draw_question_end("acertou")
-                input()
+
                 _round += 1
                 if _round == 17:
                     win_or_loose = 1
                     break
+
+                user_input = input()
+                
+                if user_input in 'cC':
+                    continue
+
+                elif user_input in 'pP':
+                    win_or_loose = 0
+                    break
+
             else:
                 View.draw_question_end("errou")
                 input()
@@ -94,6 +111,3 @@ class Game():
             return True
         else:
             return False
-        
-
-    
