@@ -18,8 +18,15 @@ class Game():
             while True:
                 try:
                     user_answer = int(input())
+
+                    if user_answer > 4 or user_answer < 1:
+                        View.draw_question(_round, current_question)
+                        continue
+
                 except ValueError:
+                    View.draw_question(_round, current_question)
                     continue
+                
                 else:
                     break
 
@@ -82,9 +89,6 @@ class Game():
     def check_answer(current_question, user_answer):
 
         selected_answer = current_question.answers[user_answer - 1]
-
-        print(current_question.right_answer)
-        print(selected_answer)
 
         if current_question.right_answer == selected_answer:
             return True

@@ -7,10 +7,11 @@ def switch(input):
         # Run main game
         win_or_loose = Game.run()
         View.draw_game_end(win_or_loose)
-
         return
+
     elif input in 'rR':
         # Show the rules
+        View.draw_rules()
         return
 
 while True:
