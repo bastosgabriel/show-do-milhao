@@ -1,5 +1,6 @@
 from view import View
 from question import Question
+import random
 
 class Game():
     
@@ -11,8 +12,13 @@ class Game():
 
             View.draw_question(_round, current_question)
 
-            # VALIDAR ESTA ENTRADA
-            user_answer = int(input())
+            while True:
+                try:
+                    user_answer = int(input())
+                except ValueError:
+                    continue
+                else:
+                    break
 
             # If answer is correct
             if Game.check_answer(current_question, user_answer):
@@ -34,7 +40,32 @@ class Game():
     Returns the Question object with the current question
     '''
     def generate_question(_round):
-        return Question("Quantas letras tem em 'Brasil'?", ["5", "6", "7", "9"], "6")
+
+        file_questions = open("perguntas_ativas.txt","r")
+        file_answers = open("respostas_ativas.txt","r")
+
+        if 0 < _round < 6:
+            questions_range = [0, 9]
+        elif 5 < _round < 11:
+            questions_range = [10, 19]
+        elif 10 < _round < 17:
+            questions_range = [20, 29]
+
+        question_lines = file_questions.readlines()
+        answer_lines = file_answers.readlines()
+
+        file_questions.close()
+        file_answers.close()
+
+        question_drawn = random.randint(questions_range[0], questions_range[1])
+
+
+        return Question(question_lines[question_drawn],
+                        [answer_lines[(question_drawn + 1) * 4 - 4], 
+                         answer_lines[(question_drawn + 1) * 4 - 3], 
+                         answer_lines[(question_drawn + 1) * 4 - 2], 
+                         answer_lines[(question_drawn + 1) * 4 - 1]],
+                         answer_lines[(question_drawn + 1) * 4 - 4)
 
     '''
     Returns True if the answer is right and False otherwise

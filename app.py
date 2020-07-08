@@ -15,7 +15,4 @@ def switch(input):
 
 while True:
     View.draw_main_menu()
-    
-    
-    switch(input())
-    
+    switch(input())  

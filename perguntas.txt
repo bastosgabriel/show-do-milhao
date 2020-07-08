@@ -98,7 +98,7 @@ Qual era a profissão exercida por Lula, antes de ele ser presidente do PT?
 Quem foi o amor do imperador Marco Antônio?
 Qual estação do ano fica entre o verão e o inverno?
 Como Joana d‘Arc foi morta?
-Quantos jogadores um jogo de vôlei reúne na quadra?2
+Quantos jogadores um jogo de vôlei reúne na quadra?
 Qual é o país do tango?
 Que imperador pôs fogo em Roma?
 A cidade de Pompéia, que foi soterrada por um vulcão fica em qual desses países?
@@ -297,4 +297,4 @@ O que o pintor Claude Monet representou em suas telas?
 Miró, Picasso e Salvador Dalí eram pintores:
 Qual foi o piloto de Fórmula 1 que conquistou o título de campeão mundial cinco vezes?
 Como o rei francês Luis XVI e sua esposa Maria Antonieta morreram?
-Como é chamada a gravura impressa sobre pranchas de madeira?
+Como é chamada a gravura impressa sobre pranchas de madeira? + 1
