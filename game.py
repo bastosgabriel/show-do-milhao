@@ -65,7 +65,7 @@ class Game():
                          answer_lines[(question_drawn + 1) * 4 - 3], 
                          answer_lines[(question_drawn + 1) * 4 - 2], 
                          answer_lines[(question_drawn + 1) * 4 - 1]],
-                         answer_lines[(question_drawn + 1) * 4 - 4)
+                         answer_lines[(question_drawn + 1) * 4 - 4])
 
     '''
     Returns True if the answer is right and False otherwise
