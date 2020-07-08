@@ -7,8 +7,11 @@ class Game():
     @staticmethod
     def run():
         _round = 1
+        already_asked_questions = []
+
         while True:
-            current_question = Game.generate_question(_round)
+            current_question = Game.generate_question(_round, already_asked_questions)
+            already_asked_questions.append(current_question.text)
 
             View.draw_question(_round, current_question)
 
@@ -39,7 +42,7 @@ class Game():
     '''
     Returns the Question object with the current question
     '''
-    def generate_question(_round):
+    def generate_question(_round, already_asked_questions):
 
         file_questions = open("perguntas_ativas.txt","r")
         file_answers = open("respostas_ativas.txt","r")
@@ -57,8 +60,14 @@ class Game():
         file_questions.close()
         file_answers.close()
 
-        question_drawn = random.randint(questions_range[0], questions_range[1])
+        # Generates a new question if that question was already asked
+        while True:
+            question_drawn = random.randint(questions_range[0], questions_range[1])
 
+            if question_lines[question_drawn] in already_asked_questions:
+                continue
+            else:
+                break
 
         return Question(question_lines[question_drawn],
                         [answer_lines[(question_drawn + 1) * 4 - 4], 
