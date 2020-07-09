@@ -4,7 +4,7 @@ import platform
 from PyInquirer import style_from_dict, prompt, Separator
 from examples import custom_style_1
 
-
+# This creates a function called clear() that executes the system command to clear the terminal
 if platform.system() == 'Windows':
     clear = lambda: os.system('cls')
 elif platform.system() == 'Linux' or platform.system() == 'Darwin':
@@ -14,7 +14,7 @@ elif platform.system() == 'Linux' or platform.system() == 'Darwin':
 class View():
     '''
     The view class is responsible for all the visualization of questions, answers and etc on the terminal.
-    It's also responsible for retrieving the user inputs.
+    It's also responsible for retrieving the user inputs using PyInquirer.
     '''
     
     @staticmethod
@@ -38,8 +38,13 @@ class View():
     @staticmethod
     def draw_question(game):
         '''
-        Draw the question scene and returns the user answer.
+        Draw the question scene and returns the user answer. Receives the game object as parameter to print the question, answers, round etc
         '''
+        def disable_skip(skips):
+            if skips == 0:
+                return 'opção desabilitada'
+            else:
+                return False
 
         clear()
 
@@ -57,6 +62,11 @@ class View():
                         f"2: {game.current_question.answers[1]}",
                         f"3: {game.current_question.answers[2]}",
                         f"4: {game.current_question.answers[3]}",
+                        Separator(),
+                        {
+                            'name': f'Pular questão (Pulos restantes: {game.skips})',
+                            'disabled': disable_skip(game.skips)
+                        },
                         Separator(),
                         Separator(" Prêmio: R$ {}".format(game.prizes[str(game.current_round)]['Acertar'])),
                     ],
@@ -76,6 +86,11 @@ class View():
                         f"3: {game.current_question.answers[2]}",
                         f"4: {game.current_question.answers[3]}",
                         Separator(),
+                        {
+                            'name': f'5: Pular questão (Pulos restantes: {game.skips})',
+                            'disabled': disable_skip(game.skips)
+                        },
+                        Separator(),
                         Separator(" Prêmio: R$ {}".format(game.prizes[str(game.current_round)]['Acertar'])),
                     ],
                 }
@@ -90,12 +105,23 @@ class View():
         '''
 
         clear()
-        print("this is draw_rules")
+        print("O jogo possui 3 fases. Cada uma contendo 5 perguntas.")
+        print("Na  primeira  fase,  as  perguntas  valem R$ 1 mil")
+        print("com  incremento  de  R$  1  mil  por  pergunta.")
+        print("Na segunda,  R$ 10 mil com incrementos de R$ 10 mil.")
+        print("A terceira funciona igualmente porém com R$ 100 mil.")
+        print("A  pergunta  final  vale  R$  1  milhão.")
+        print("O jogador tem a opção de parar o jogo antes de responder")
+        print("a próxima pergunta. Neste caso, ele fica com o último")
+        print("prêmio recebido.")
+        print("Se errar uma resposta, fica com metade do último prêmio")
+        print("A não ser que seja a pergunta final, neste caso o")
+        print("participante não leva nada")
         
     @staticmethod
-    def draw_question_end(answer_result):
+    def draw_question_end(answer_result, game):
         '''
-        Draw the post question scene, which tells you if you succeed or failed.
+        Draw the post question scene, which tells you if you succeed or failed based on answer_result parameter.
         Also gives you the option to stop the game.
         '''
 
@@ -106,7 +132,12 @@ class View():
                     'type': 'list',
                     'message': "PARABÉNS!! Você acertou a resposta, deseja continuar?",
                     'name': 'confirmation',
-                    'choices': ["Continuar", "Parar"],
+                    'choices': [
+                        f"Continuar para pergunta de R$ {game.prizes[str(game.current_round)]['Acertar']}", 
+                        f"Parar e ficar com R$ {game.prizes[str(game.current_round)]['Parar']}",
+                        Separator(),
+                        Separator(f"Errando a próxima pergunta você fica com: R$ {game.prizes[str(game.current_round)]['Errar']}")
+                    ],
                 }
             ]
         
@@ -118,7 +149,10 @@ class View():
                     'type': 'list',
                     'message': "Poxa, esta não era a resposta correta",
                     'name': 'confirmation',
-                    'choices': ["OK :("],
+                    'choices': [
+                        "OK :(",
+                        Separator(f"Te restou R$ {game.prizes[str(game.current_round)]['Errar']}")
+                    ],
                 }
             ]
         
@@ -132,23 +166,65 @@ class View():
 
         clear()
         if win_or_loose == 1:
-            print("PARABÉNS!!!!1!!! VOCÊ É UM VENCEDOR")
-            print("         /\     /\               ")
-            print("        {  `---'  }              ")
-            print("        {  O   O  }              ")
-            print("      ~~|~   V   ~|~~            ")
-            print("         \  \|/  /               ")
-            print("          `-----'__              ")
-            print("          /     \  `^\_          ")
-            print("         {       }\ |\_\_   W    ")
-            print("         |  \_/  |/ /  \_\_( )   ")
-            print("         \__/  /(_E     \__/     ")
-            print("           (  /                  ")
-            print("            MM                   ")
+            print("                                    PARABÉNS!!!!1!!! VOCÊ É O VENCEDOR                                  ")
+            print("                                                                                                        ")
+            print("                                                  ██████                                                ")
+            print("                                              ████░░▒▒  ████                                            ")
+            print("                                            ██▒▒░░░░▒▒░░░░░░██                                          ")
+            print("                                          ██░░▒▒░░░░▒▒░░░░░░▒▒██                                        ")
+            print("                                        ██░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░██                                        ")
+            print("                                        ██░░▒▒░░░░░░▒▒░░░░░░▒▒▓▓                                        ")
+            print("                                      ▓▓▒▒▒▒▒▒░░░░░░▒▒░░░░░░▒▒░░██                                      ")
+            print("                                      ██░░░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░██                                      ")
+            print("                                      ██░░░░▒▒░░░░░░▒▒░░░░░░▒▒░░██                                      ")
+            print("                                    ██▒▒░░░░▒▒░░░░░░▒▒░░░░░░▒▒▒▒██                                      ")
+            print("                                    ██░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░██                                      ")
+            print("                                    ██░░░░░░▒▒░░░░▒▒░░░░░░░░▒▒░░██                                      ")
+            print("                                    ██░░░░▒▒░░░░░░▒▒░░░░░░░░▒▒░░██                                      ")
+            print("                                  ██▒▒░░░░▒▒░░░░░░▒▒  ░░░░░░▒▒▒▒░░██                                    ")
+            print("                                  ██░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░██                                    ")
+            print("                                  ██░░░░░░▒▒░░░░░░▒▒░░░░░░░░▒▒░░░░██                                    ")
+            print("                                  ██░░░░░░▒▒░░░░░░▒▒░░░░░░░░░░░░░░██                                    ")
+            print("                                  ██▒▒▒▒░░▒▒░░░░░░▒▒░░░░░░░░▒▒▒▒▒▒██                                    ")
+            print("                        ██▓▓████  ▓▓░░░░▒▒▒▒▒▒░░▒▒▒▒▒▒▒▒▒▒░░░░░░░░██                                    ")
+            print("                        ██▒▒▒▒▒▒▓▓██░░░░░░▒▒░░░░░░▒▒░░░░░░░░████░░██                                    ")
+            print("                          ██▒▒▒▒▓▓▓▓▓▓░░░░▒▒░░░░░░▒▒░░░░▓▓▓▓▒▒██░░██        ██▓▓                        ")
+            print("                          ██▒▒▒▒▒▒▒▒▓▓██░░▒▒░░░░░░▒▒░░██▒▒▒▒▒▒██▒▒▒▒██  ████▒▒██                        ")
+            print("                            ▓▓▒▒▒▒▒▒▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒▒▒▒▒██░░░░██▓▓▒▒▒▒▒▒██                        ")
+            print("                            ██▒▒▒▒▒▒▒▒▒▒██▒▒░░░░░░██▒▒▒▒▒▒▒▒▒▒██░░░░██▒▒▒▒▒▒██                          ")
+            print("                            ██▒▒▒▒▒▒▓▓▒▒▒▒██░░░░░░██▒▒▒▒▒▒▒▒▒▒██▒▒▒▒██▓▓▓▓▓▓██                          ")
+            print("                            ██▒▒▒▒▒▒▒▒▓▓▒▒██░░░░██▒▒▒▒▒▒▒▒▒▒▒▒▓▓██░░██▒▒▓▓██                            ")
+            print("                          ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓██▒▒██▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓░░██▒▒▓▓██                            ")
+            print("                          ██▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒██▒▒██▒▒▒▒▒▒▒▒▒▒▒▒▒▒██░░██▒▒▓▓██                            ")
+            print("                          ██▒▒▒▒▒▒▒▒░░▒▒▒▒▒▒██░░██▒▒▒▒▒▒▒▒▒▒▒▒▒▒██░░██▒▒▓▓██                            ")
+            print("                          ██▒▒▒▒▒▒░░░░▒▒▒▒▒▒▓▓██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓████▒▒▓▓██                            ")
+            print("                          ██▒▒▒▒▒▒░░░░░░▒▒▓▓▓▓██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓████▓▓▓▓██                            ")
+            print("                        ██▒▒▒▒▒▒▒▒▒▒░░▒▒▒▒▓▓▒▒██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒████▒▒▓▓██                            ")
+            print("                        ██▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▒▒██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓██▒▒▓▓▓▓▒▒                          ")
+            print("                        ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██▓▓▓▓▒▒██                          ")
+            print("                        ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▒▒██                          ")
+            print("                        ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██▓▓▒▒██                          ")
+            print("                        ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒██▒▒▒▒██                          ")
+            print("                        ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██▓▓▒▒██                          ")
+            print("                        ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██▓▓▓▓██                          ")
+            print("                          ██▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒██▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓██▓▓██                            ")
+            print("                          ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒██▓▓██                            ")
+            print("                          ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██▒▒██                            ")
+            print("                            ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒██▒▒▒▒▒▒▒▒▒▒▒▒░░▒▒▒▒▒▒▒▒▒▒████                              ")
+            print("                            ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓██▒▒▒▒▓▓▒▒▓▓▒▒▒▒▒▒▒▒▒▒▒▒████                              ")
+            print("                              ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒██▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒██                                ")
+            print("                                ██▒▒▒▒▒▒▒▒▒▒▓▓▓▓██▓▓▒▒▒▒▓▓▒▒▒▒▒▒▒▒▒▒██                                  ")
+            print("                                  ████▒▒▒▒▒▒▒▒▒▒▓▓████▒▒▒▒▒▒▒▒▓▓████                                    ")
+            print("                                      ████████████▓▓▓▓██████████                                        ")
+            print("                                        ░░██▓▓▓▓▓▓▓▓▒▒▓▓▓▓▓▓██░░                                        ")
+            print("                                          ██▓▓▒▒▓▓▒▒▒▒▒▒▒▒▓▓██                                          ")
+            print("                                            ██▓▓████████████                                            ")
+            print("                                                                                                        ")
+            print("                                          GANHOU 1 BAITA MILHÃO                                         ") 
             input()
 
         elif win_or_loose == 0:
-            print("Bacana, vc saiu com um premio razoavel!")
+            print("Bacana, você saiu com um prêmio razoável!")
             input()
         
         elif win_or_loose == -1:
@@ -181,6 +257,6 @@ class View():
             print("    .-'. _.'\      / `;      \,__:      \       ")
             print("    `---'    `----'   ;      /    \,.,,,/       ")
             print("                       `----`                   ")
-            print("              :( Você perdeu :(                 ")
+            print("      :(       :( Você perdeu :(       :(       ")
 
             input()

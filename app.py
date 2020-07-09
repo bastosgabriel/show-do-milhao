@@ -13,6 +13,8 @@ while True:
     elif user_input == 'Ler regras':
         # Show the rules
         View.draw_rules()
+        input()
 
     elif user_input == 'Fechar':
+        # Close the game
         break
