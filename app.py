@@ -7,14 +7,15 @@ while True:
 
     if user_input == 'Começar':
         # Run main game
-        win_or_loose = Game.run()
+        game = Game()
+        win_or_loose = game.run()
         View.draw_game_end(win_or_loose)
 
         input()
        
     elif user_input == 'Ler regras':
         # Show the rules
-        
+
         View.draw_rules()
 
     elif user_input == 'Fechar':

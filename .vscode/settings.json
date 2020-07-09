@@ -1,3 +1,5 @@
 {
-    "python.pythonPath": "/home/bastosgabriel/code/show-do-milhao/venv/bin/python3.7"
+    "python.pythonPath": "/home/bastosgabriel/code/show-do-milhao/venv/bin/python3.7",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
 }

@@ -9,6 +9,8 @@ if platform.system() == 'Windows':
 elif platform.system() == 'Linux' or platform.system() == 'Darwin':
     clear = lambda: os.system('clear')
 
+
+
 class View():
     
     '''
@@ -33,23 +35,23 @@ class View():
     Draw the question scene and returns the user answer
     '''
     @staticmethod
-    def draw_question(_round, current_question):
+    def draw_question(game):
         clear()
         
         question = [
             {
                 'type': 'list',
-                'message': f"{current_question.text}",
+                'message': f"{game.current_question.text}",
                 'name': 'question',
                 'choices': [
-                    Separator(f"{_round}º Rodada - Pergunta 1/5"),
+                    Separator(f"{game.current_round}º Rodada - Pergunta 1/5"),
                     Separator(),
-                    f"1: {current_question.answers[0]}",
-                    f"2: {current_question.answers[1]}",
-                    f"3: {current_question.answers[2]}",
-                    f"4: {current_question.answers[3]}",
+                    f"1: {game.current_question.answers[0]}",
+                    f"2: {game.current_question.answers[1]}",
+                    f"3: {game.current_question.answers[2]}",
+                    f"4: {game.current_question.answers[3]}",
                     Separator(),
-                    Separator(f" Prêmio: "),
+                    Separator(" Prêmio: {}".format(game.prizes[str(game.current_round)]['Acertar'])),
                 ],
             }
         ]

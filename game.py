@@ -5,28 +5,51 @@ from question import Question
 
 class Game():
     """
+    The game class is responsible for all the main methods involving the gameplay and
+    attributes of the game
     """
-    @staticmethod
-    def run():
+    def __init__(self):
+        self.prizes = {
+            '1':  {'Acertar': '1 mil',    'Parar': '0 mil', 'Errar': '0'},
+            '2':  {'Acertar': '2 mil',    'Parar': '1 mil', 'Errar': '500'},
+            '3':  {'Acertar': '3 mil',    'Parar': '2 mil', 'Errar': '1'},
+            '4':  {'Acertar': '4 mil',    'Parar': '3 mil', 'Errar': '1.5'},
+            '5':  {'Acertar': '5 mil',    'Parar': '4 mil', 'Errar': '2'},
+            '6':  {'Acertar': '10 mil',   'Parar': '5 mil', 'Errar': '2.5'},
+            '7':  {'Acertar': '20 mil',   'Parar': '10 mil', 'Errar': '5'},
+            '8':  {'Acertar': '30 mil',   'Parar': '20 mil', 'Errar': '10'},
+            '9':  {'Acertar': '40 mil',   'Parar': '30 mil', 'Errar': '15'},
+            '10': {'Acertar': '50 mil',   'Parar': '40 mil', 'Errar': '20'},
+            '11': {'Acertar': '100 mil',  'Parar': '50 mil', 'Errar': '25'},
+            '12': {'Acertar': '200 mil',  'Parar': '100 mil', 'Errar': '50'},
+            '13': {'Acertar': '300 mil',  'Parar': '200 mil', 'Errar': '100'},
+            '14': {'Acertar': '400 mil',  'Parar': '300 mil', 'Errar': '150'},
+            '15': {'Acertar': '500 mil',  'Parar': '400 mil', 'Errar': '200'},
+            '16': {'Acertar': '1 MILHÃO', 'Parar': '500 mil', 'Errar': '0'}
+        }
+
+        self.current_question = ''
+        self.current_round = 1
+        self.already_asked_questions = []
+
+    def run(self):
         """
-        This method is responsible for the main game logic, returns a variable called win_or_loose
+        This method is responsible for the main game logic. Returns a variable called win_or_loose
         win_or_loose = 1 if you won
         win_or_loose = -1 if you lost
         win_or_loose = 0 if you decided to stop the game
         """
-        _round = 1
-        already_asked_questions = []
 
         while True:
-            current_question = Game.generate_question(_round, already_asked_questions)
-            already_asked_questions.append(current_question.text)
+            self.current_question = self.generate_question()
+            self.already_asked_questions.append(self.current_question.text)
 
-            user_answer = int(View.draw_question(_round, current_question)['question'][0])
+            user_answer = int(View.draw_question(self)['question'][0])
             
             # If the answer is correct
-            if Game.check_answer(current_question, user_answer):
-                _round += 1
-                if _round == 17:
+            if self.check_answer(user_answer):
+                self.current_round += 1
+                if self.current_round == 17:
                     win_or_loose = 1
                     break
 
@@ -48,9 +71,7 @@ class Game():
         return win_or_loose
 
 
-
-    @staticmethod
-    def generate_question(_round, already_asked_questions):
+    def generate_question(self):
         """
         Returns the Question object with the current question
         """
@@ -58,11 +79,11 @@ class Game():
         file_questions = open("perguntas_ativas.txt","r")
         file_answers = open("respostas_ativas.txt","r")
 
-        if 0 < _round < 6:
+        if 0 < self.current_round < 6:
             questions_range = [0, 9]
-        elif 5 < _round < 11:
+        elif 5 < self.current_round < 11:
             questions_range = [10, 19]
-        elif 10 < _round < 17:
+        elif 10 < self.current_round < 17:
             questions_range = [20, 29]
 
         question_lines = file_questions.readlines()
@@ -75,7 +96,7 @@ class Game():
         while True:
             question_drawn = random.randint(questions_range[0], questions_range[1])
 
-            if question_lines[question_drawn] in already_asked_questions:
+            if question_lines[question_drawn] in self.already_asked_questions:
                 continue
             else:
                 break
@@ -90,11 +111,11 @@ class Game():
     '''
     Returns True if the answer is right and False otherwise
     '''
-    def check_answer(current_question, user_answer):
+    def check_answer(self, user_answer):
 
-        selected_answer = current_question.answers[user_answer - 1]
+        selected_answer = self.current_question.answers[user_answer - 1]
 
-        if current_question.right_answer == selected_answer:
+        if self.current_question.right_answer == selected_answer:
             return True
         else:
             return False
