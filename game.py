@@ -74,7 +74,6 @@ class Game():
                 win_or_loose = -1
                 break
 
-
         return win_or_loose
 
 
