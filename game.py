@@ -29,13 +29,20 @@ class Game():
             '16': {'Acertar': '1 MILHÃO', 'Parar': '500 mil', 'Errar': '0'  }
         }
 
+        self.cards = ["K","A","2","3"]
+        random.shuffle(self.cards)
+
+        self.cards_disable_dict = {"K": 0,"A": 1,"2": 2,"3": 3}
+
+        self.disabled_answers = []
         self.current_question = ''
         self.current_round = 1
         self.current_phase = 1
         self.current_phase_question = 1
         self.already_asked_questions = []
         self.skips = 3
-        
+        self.cards_uses = 1
+        self.used_power = False
 
     def run(self):
         '''
@@ -49,6 +56,8 @@ class Game():
             self.current_question = self.generate_question()
             self.already_asked_questions.append(self.current_question.text)
 
+            self.used_power = False
+
             # Gets only the number referent to the answer chosen by the player
             user_answer = int(View.draw_question(self)['question'][0])
             
@@ -56,6 +65,19 @@ class Game():
             if user_answer == 5 and self.skips > 0:
                 self.skips -= 1
                 continue
+
+            # Checks if the user used the cards
+            if user_answer == 6 and self.cards_uses > 0:
+                self.cards_uses -= 1
+                self.used_power = True
+
+                # Uses the number of the chosen option to get the index of the card and save the card value
+                chosen_card = self.cards[int(View.draw_cards(self)['card'][0]) - 1]
+                View.draw_card_reveal(self, chosen_card)
+
+                self.disable_answers(chosen_card)
+
+                user_answer = int(View.draw_question(self)['question'][0])
 
             # If the answer is correct
             if self.check_answer(user_answer):
@@ -134,3 +156,20 @@ class Game():
             return True
         else:
             return False
+
+
+    def disable_answers(self, chosen_card):
+        '''
+        Appends wrong answers into the game.disabled_answers list. The number of disabled answers is according to chosen_card.
+        '''
+        disables = self.cards_disable_dict[chosen_card]
+
+        while disables > 0:
+            random_answer = self.current_question.answers[random.randint(0,3)]
+
+            if (random_answer == self.current_question.right_answer) or (random_answer in self.disabled_answers):
+                continue
+
+            else:
+                self.disabled_answers.append(random_answer)
+                disables -= 1

@@ -40,8 +40,14 @@ class View():
         '''
         Draw the question scene and returns the user answer. Receives the game object as parameter to print the question, answers, round etc
         '''
-        def disable_skip(skips):
-            if skips == 0:
+        def disable_power(uses, used_power):
+            if (uses == 0) or (used_power):
+                return 'opção desabilitada'
+            else:
+                return False
+
+        def disable_by_answer(current_answer, disabled_answers):
+            if current_answer in disabled_answers:
                 return 'opção desabilitada'
             else:
                 return False
@@ -63,11 +69,6 @@ class View():
                         f"3: {game.current_question.answers[2]}",
                         f"4: {game.current_question.answers[3]}",
                         Separator(),
-                        {
-                            'name': f'Pular questão (Pulos restantes: {game.skips})',
-                            'disabled': disable_skip(game.skips)
-                        },
-                        Separator(),
                         Separator(" Prêmio: R$ {}".format(game.prizes[str(game.current_round)]['Acertar'])),
                     ],
                 }
@@ -81,14 +82,30 @@ class View():
                     'choices': [
                         Separator(f"{game.current_phase}º Fase - Pergunta {game.current_phase_question}/5"),
                         Separator(),
-                        f"1: {game.current_question.answers[0]}",
-                        f"2: {game.current_question.answers[1]}",
-                        f"3: {game.current_question.answers[2]}",
-                        f"4: {game.current_question.answers[3]}",
+                        {
+                            'name': f"1: {game.current_question.answers[0]}",
+                            'disabled': disable_by_answer(game.current_question.answers[0], game.disabled_answers)
+                        }, 
+                        {
+                            'name': f"2: {game.current_question.answers[1]}",
+                            'disabled': disable_by_answer(game.current_question.answers[1], game.disabled_answers)
+                        }, 
+                        {
+                            'name': f"3: {game.current_question.answers[2]}",
+                            'disabled': disable_by_answer(game.current_question.answers[2], game.disabled_answers)
+                        }, 
+                        {
+                            'name': f"4: {game.current_question.answers[3]}",
+                            'disabled': disable_by_answer(game.current_question.answers[3], game.disabled_answers)
+                        }, 
                         Separator(),
                         {
                             'name': f'5: Pular questão (Pulos restantes: {game.skips})',
-                            'disabled': disable_skip(game.skips)
+                            'disabled': disable_power(game.skips, game.used_power)
+                        },
+                        {
+                            'name': f'6: Usar cartas (Usos restantes: {game.cards_uses})',
+                            'disabled': disable_power(game.cards_uses, game.used_power)
                         },
                         Separator(),
                         Separator(" Prêmio: R$ {}".format(game.prizes[str(game.current_round)]['Acertar'])),
@@ -260,3 +277,53 @@ class View():
             print("      :(       :( Você perdeu :(       :(       ")
 
             input()
+
+
+    @staticmethod
+    def draw_cards(game):
+        '''
+        Draw the cards scene, that is when the user decided to drawn a card to potentially disable wrong answers.
+        '''
+        clear()
+
+        card = [
+            {
+                'type': 'list',
+                'message': 'Escolha sua carta!',
+                'name': 'card',
+                'choices': ["1: 🂠", "2: 🂠", "3: 🂠", "4: 🂠"]
+            }
+        ]
+
+        return prompt(card, style=custom_style_1)
+
+    @staticmethod
+    def draw_card_reveal(game, chosen_card):
+        '''
+        Draw the card reveal scene. That is when the player get to know what card he actually choose.
+        '''
+
+        print("")
+
+        if chosen_card == '3':
+            print(f"Você escolheu um {chosen_card} de espadas! ", end='')
+            print("🂣")
+            print("Isso significa que serão desabilitadas 3 respostas erradas!")
+
+        if chosen_card == '2':
+            print(f"Você escolheu um {chosen_card} de espadas! ", end='')
+            print("🂢")
+            print("Isso significa que serão desabilitadas 2 respostas erradas!")
+  
+        if chosen_card == 'A':
+            print(f"Você escolheu um {chosen_card} de espadas! ", end='')
+            print("🂡")
+            print("Isso significa que será desabilitada 1 resposta errada!")
+
+        if chosen_card == 'K':
+            print(f"Você escolheu um {chosen_card} de espadas! ", end='')
+            print("🂮")
+            print("Isso significa que nenhuma resposta será desabilitada! :(")
+
+        input()
+        
