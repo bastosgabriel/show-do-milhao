@@ -1,6 +1,9 @@
 import os
 import platform
 
+from PyInquirer import style_from_dict, prompt, Separator
+from examples import custom_style_1
+
 if platform.system() == 'Windows':
     clear = lambda: os.system('cls')
 elif platform.system() == 'Linux' or platform.system() == 'Darwin':
@@ -8,60 +11,50 @@ elif platform.system() == 'Linux' or platform.system() == 'Darwin':
 
 class View():
     
-    def printRed(msg): print(f"\033[91m {msg}\033[00m", end='')
-    def printGreen(msg): print(f"\033[92m {msg}\033[00m", end='')
-    def printYellow(msg): print(f"\033[93m {msg}\033[00m", end='')
-    def printLightPurple(msg): print(f"\033[94m {msg}\033[00m", end='')
-    def printPurple(msg): print(f"\033[95m {msg}\033[00m", end='')
-    def printCyan(msg): print(f"\033[96m {msg}\033[00m", end='')
-    def printLightGray(msg): print(f"\033[97m {msg}\033[00m", end='')
-    def printBlack(msg): print(f"\033[98m {msg}\033[00m", end='')
-
     '''
-    Draw the main menu
+    Draw the main menu and returns the user input
     '''
     @staticmethod
     def draw_main_menu():
         clear()
 
-        print("/----------------------------------------------/")
-        print("/          Bem-vindo ao Show do Milhão         /")
-        print("/             da familia Aguiar!               /")
-        print("/                                              /")
-        print("/                                              /")
-        print("/           ", end='')
-        View.printGreen("C")
-        print("OMEÇAR      LER", end='')
-        View.printGreen("R")
-        print("EGRAS           /")
-        print("/                                              /")
-        print("/                                              /")
-        print("/                                              /")
-        print("/         pressione a letra em destaque        /")
-        print("/           para escolher uma opção            /")
-        print("/----------------------------------------------/")
-        
+        menu = [
+            {
+                'type': 'list',
+                'message': 'Bem-vindo ao Show do Milhao da família Aguiar!',
+                'name': 'main menu',
+                'choices': ["Começar", "Ler regras", "Fechar"]
+            }
+        ]
+
+        return prompt(menu, style=custom_style_1)
+    
     '''
-    Draw the question scene
+    Draw the question scene and returns the user answer
     '''
     @staticmethod
     def draw_question(_round, current_question):
         clear()
-
-        print("/----------------------------------------------/")
-        print(f"/ {_round}º Rodada - pergunta 1/5                   /")
-        print("/                                              /")
-        print(f"/ {current_question.text}                            /")
-        print("/                                              /")
-        print("/                                              /")
-        print(f" (1): {current_question.answers[0]}            /")
-        print(f" (2): {current_question.answers[1]}            /")
-        print(f" (3): {current_question.answers[2]}            /")
-        print(f" (4): {current_question.answers[3]}            /")
-        print("/                                              /")
-        print("/         pressione a letra em destaque        /")
-        print("/           para escolher uma opção            /")
-        print("/----------------------------------------------/")
+        
+        question = [
+            {
+                'type': 'list',
+                'message': f"{current_question.text}",
+                'name': 'question',
+                'choices': [
+                    Separator(f"{_round}º Rodada - Pergunta 1/5"),
+                    Separator(),
+                    f"1: {current_question.answers[0]}",
+                    f"2: {current_question.answers[1]}",
+                    f"3: {current_question.answers[2]}",
+                    f"4: {current_question.answers[3]}",
+                    Separator(),
+                    Separator(f" Prêmio: "),
+                ],
+            }
+        ]
+       
+        return prompt(question, style=custom_style_1)
     
     '''
     Draw the rules scene
@@ -78,16 +71,81 @@ class View():
     def draw_question_end(answer_result):
         clear()
         if answer_result == "acertou":
-            print("this is draw_question_end ACERTOU")
+            confirmation = [
+                {
+                    'type': 'list',
+                    'message': "PARABÉNS!! Você acertou a resposta, deseja continuar?",
+                    'name': 'confirmation',
+                    'choices': ["Continuar", "Parar"],
+                }
+            ]
+        
+            return prompt(confirmation, style=custom_style_1)
 
         elif answer_result == "errou":
-            print("this is draw_question_end ERROU")
+            confirmation = [
+                {
+                    'type': 'list',
+                    'message': "Poxa, esta não era a resposta correta",
+                    'name': 'confirmation',
+                    'choices': ["OK :("],
+                }
+            ]
+        
+            return prompt(confirmation, style=custom_style_1)
         
     '''
-    Draw last game scene, which tells you if you won or loose
+    Draw last game scene, which tells you if you won or lost the game
     '''
     @staticmethod
     def draw_game_end(win_or_loose):
         clear()
-        print(f"this is draw_game_end {win_or_loose}")
+        if win_or_loose == 1:
+            print("PARABÉNS!!!!1!!! VOCÊ É UM VENCEDOR")
+            print("         /\     /\               ")
+            print("        {  `---'  }              ")
+            print("        {  O   O  }              ")
+            print("      ~~|~   V   ~|~~            ")
+            print("         \  \|/  /               ")
+            print("          `-----'__              ")
+            print("          /     \  `^\_          ")
+            print("         {       }\ |\_\_   W    ")
+            print("         |  \_/  |/ /  \_\_( )   ")
+            print("         \__/  /(_E     \__/     ")
+            print("           (  /                  ")
+            print("            MM                   ")
+
+        elif win_or_loose == 0:
+            print("Bacana, vc saiu com um premio razoavel!")
         
+        elif win_or_loose == -1:
+            print("              :( Você perdeu :(                 ")
+            print("          ,                                     ")
+            print("          \`-._          __                     ")
+            print("           \  `-..____,.'  `.                   ")
+            print("           :`.         /     \`.                ")
+            print("            : )       :       : \               ")
+            print("            ;'        '   ;  |   :              ")
+            print("            )..      .. .:.`.;   :              ")
+            print("            /::...  .:::...   ` ;               ")
+            print("            ; _ '    __        /:\              ")
+            print("            `:o>   /\o_>      ;:. `.            ")
+            print("           `-`.__ ;   __..--- /:.  \            ")
+            print("           === \_/   ;=====_.':.    ;           ")
+            print("            ,/'`--'...`--....        ;          ")
+            print("                ;                     ;         ")
+            print("              .'                       ;        ")
+            print("            .'                         ;        ")
+            print("          .'     ..     ,      .       ;        ")
+            print("         :       ::..  /      ;::.     |        ")
+            print("        /      `.;::.  |       ;:..    ;        ")
+            print("        :        |:.   :       ;:.    ;         ")
+            print("        :        ::     ;:..   |.     ;         ")
+            print("        :       :;       :::....|     |         ")
+            print("        /\     ,/ \       ;:::::;     ;         ")
+            print("        .:. \:..|    :    ; '.--|     ;         ")
+            print("       ::.  :''  `-.,,;     ;'   ;     ;        ")
+            print("    .-'. _.'\      / `;      \,__:      \       ")
+            print("    `---'    `----'   ;      /    \,.,,,/       ")
+            print("                       `----`                   ")
+            print("              :( Você perdeu :(                 ")

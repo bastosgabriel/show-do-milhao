@@ -1,17 +1,19 @@
+import random
 from view import View
 from question import Question
-import random
+
 
 class Game():
-    
-    '''
-    This method is responsible for the main game logic, returns a variable called win_or_loose
-    win_or_loose = 1 if you won
-    win_or_loose = -1 if you lost
-    win_or_loose = 0 if you decided to stop the game
-    '''
+    """
+    """
     @staticmethod
     def run():
+        """
+        This method is responsible for the main game logic, returns a variable called win_or_loose
+        win_or_loose = 1 if you won
+        win_or_loose = -1 if you lost
+        win_or_loose = 0 if you decided to stop the game
+        """
         _round = 1
         already_asked_questions = []
 
@@ -19,54 +21,39 @@ class Game():
             current_question = Game.generate_question(_round, already_asked_questions)
             already_asked_questions.append(current_question.text)
 
-            View.draw_question(_round, current_question)
-
-            # Gets validated user input
-            while True:
-                try:
-                    user_answer = int(input())
-
-                    if user_answer > 4 or user_answer < 1:
-                        View.draw_question(_round, current_question)
-                        continue
-
-                except ValueError:
-                    View.draw_question(_round, current_question)
-                    continue
-                
-                else:
-                    break
-
-            # If answer is correct
+            user_answer = int(View.draw_question(_round, current_question)['question'][0])
+            
+            # If the answer is correct
             if Game.check_answer(current_question, user_answer):
-                View.draw_question_end("acertou")
-
                 _round += 1
                 if _round == 17:
                     win_or_loose = 1
                     break
 
-                user_input = input()
-                
-                if user_input in 'cC':
+                user_input = View.draw_question_end("acertou")['confirmation']
+
+                if user_input == "Continuar":
                     continue
 
-                elif user_input in 'pP':
+                elif user_input == "Parar":
                     win_or_loose = 0
                     break
 
             else:
                 View.draw_question_end("errou")
-                input()
                 win_or_loose = -1
                 break
 
+
         return win_or_loose
 
-    '''
-    Returns the Question object with the current question
-    '''
+
+
+    @staticmethod
     def generate_question(_round, already_asked_questions):
+        """
+        Returns the Question object with the current question
+        """
 
         file_questions = open("perguntas_ativas.txt","r")
         file_answers = open("respostas_ativas.txt","r")
