@@ -4,20 +4,24 @@ import platform
 from PyInquirer import style_from_dict, prompt, Separator
 from examples import custom_style_1
 
+
 if platform.system() == 'Windows':
     clear = lambda: os.system('cls')
 elif platform.system() == 'Linux' or platform.system() == 'Darwin':
     clear = lambda: os.system('clear')
 
 
-
 class View():
+    '''
+    The view class is responsible for all the visualization of questions, answers and etc on the terminal.
+    It's also responsible for retrieving the user inputs.
+    '''
     
-    '''
-    Draw the main menu and returns the user input
-    '''
     @staticmethod
     def draw_main_menu():
+        '''
+        Draw the main menu and returns the user input.
+        '''
         clear()
 
         menu = [
@@ -31,13 +35,15 @@ class View():
 
         return prompt(menu, style=custom_style_1)
     
-    '''
-    Draw the question scene and returns the user answer
-    '''
     @staticmethod
     def draw_question(game):
+        '''
+        Draw the question scene and returns the user answer.
+        '''
+
         clear()
 
+        # Check if its the last round
         if game.current_round == 16:
             question = [
                 {
@@ -77,19 +83,22 @@ class View():
         
         return prompt(question, style=custom_style_1)
     
-    '''
-    Draw the rules scene
-    '''
     @staticmethod
     def draw_rules():
+        '''
+        Draw the rules scene.
+        '''
+
         clear()
         print("this is draw_rules")
         
-    '''
-    Draw the post question scene, which tells you if you succeed or failed 
-    '''
     @staticmethod
     def draw_question_end(answer_result):
+        '''
+        Draw the post question scene, which tells you if you succeed or failed.
+        Also gives you the option to stop the game.
+        '''
+
         clear()
         if answer_result == "acertou":
             confirmation = [
@@ -115,11 +124,12 @@ class View():
         
             return prompt(confirmation, style=custom_style_1)
         
-    '''
-    Draw last game scene, which tells you if you won or lost the game
-    '''
     @staticmethod
     def draw_game_end(win_or_loose):
+        '''
+        Draw the last game scene, which tells you if you won or lost the game
+        '''
+
         clear()
         if win_or_loose == 1:
             print("PARABÉNS!!!!1!!! VOCÊ É UM VENCEDOR")
@@ -135,9 +145,11 @@ class View():
             print("         \__/  /(_E     \__/     ")
             print("           (  /                  ")
             print("            MM                   ")
+            input()
 
         elif win_or_loose == 0:
             print("Bacana, vc saiu com um premio razoavel!")
+            input()
         
         elif win_or_loose == -1:
             print("              :( Você perdeu :(                 ")
@@ -170,3 +182,5 @@ class View():
             print("    `---'    `----'   ;      /    \,.,,,/       ")
             print("                       `----`                   ")
             print("              :( Você perdeu :(                 ")
+
+            input()

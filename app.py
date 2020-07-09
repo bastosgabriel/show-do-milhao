@@ -10,8 +10,6 @@ while True:
         game = Game()
         win_or_loose = game.run()
         View.draw_game_end(win_or_loose)
-
-        input()
        
     elif user_input == 'Ler regras':
         # Show the rules

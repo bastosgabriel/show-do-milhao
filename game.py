@@ -5,10 +5,10 @@ from question import Question
 
 
 class Game():
-    """
+    '''
     The game class is responsible for all the main methods involving the gameplay and
     attributes of the game
-    """
+    '''
     def __init__(self):
         self.prizes = {
             '1':  {'Acertar': '1 mil',    'Parar': '0 mil', 'Errar': '0'},
@@ -37,12 +37,12 @@ class Game():
         
 
     def run(self):
-        """
-        This method is responsible for the main game logic. Returns a variable called win_or_loose
-        win_or_loose = 1 if you won
-        win_or_loose = -1 if you lost
+        '''
+        This method is responsible for the main game logic. Returns a variable called win_or_loose:
+        win_or_loose = 1 if you won;
+        win_or_loose = -1 if you lost;
         win_or_loose = 0 if you decided to stop the game
-        """
+        '''
 
         while True:
             self.current_question = self.generate_question()
@@ -79,9 +79,9 @@ class Game():
 
 
     def generate_question(self):
-        """
+        '''
         Returns the Question object with the current question
-        """
+        '''
 
         file_questions = open("perguntas_ativas.txt","r")
         file_answers = open("respostas_ativas.txt","r")
@@ -115,10 +115,11 @@ class Game():
                          answer_lines[(question_drawn + 1) * 4 - 1]],
                          answer_lines[(question_drawn + 1) * 4 - 4])
 
-    '''
-    Returns True if the answer is right and False otherwise
-    '''
+
     def check_answer(self, user_answer):
+        '''
+        Returns True if the answer is right and False otherwise
+        '''
 
         selected_answer = self.current_question.answers[user_answer - 1]
 
