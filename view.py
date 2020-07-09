@@ -278,7 +278,6 @@ class View():
 
             input()
 
-
     @staticmethod
     def draw_cards(game):
         '''

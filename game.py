@@ -77,6 +77,7 @@ class Game():
 
                 self.disable_answers(chosen_card)
 
+                # Recall View.draw_question, but now with some options disabled (or not)
                 user_answer = int(View.draw_question(self)['question'][0])
 
             # If the answer is correct
