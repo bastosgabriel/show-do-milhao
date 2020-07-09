@@ -37,25 +37,44 @@ class View():
     @staticmethod
     def draw_question(game):
         clear()
+
+        if game.current_round == 16:
+            question = [
+                {
+                    'type': 'list',
+                    'message': f"{game.current_question.text}",
+                    'name': 'question',
+                    'choices': [
+                        Separator(f"PERGUNTA FINAL!"),
+                        Separator(),
+                        f"1: {game.current_question.answers[0]}",
+                        f"2: {game.current_question.answers[1]}",
+                        f"3: {game.current_question.answers[2]}",
+                        f"4: {game.current_question.answers[3]}",
+                        Separator(),
+                        Separator(" Prêmio: R$ {}".format(game.prizes[str(game.current_round)]['Acertar'])),
+                    ],
+                }
+            ]
+        else:
+            question = [
+                {
+                    'type': 'list',
+                    'message': f"{game.current_question.text}",
+                    'name': 'question',
+                    'choices': [
+                        Separator(f"{game.current_phase}º Fase - Pergunta {game.current_phase_question}/5"),
+                        Separator(),
+                        f"1: {game.current_question.answers[0]}",
+                        f"2: {game.current_question.answers[1]}",
+                        f"3: {game.current_question.answers[2]}",
+                        f"4: {game.current_question.answers[3]}",
+                        Separator(),
+                        Separator(" Prêmio: R$ {}".format(game.prizes[str(game.current_round)]['Acertar'])),
+                    ],
+                }
+            ]
         
-        question = [
-            {
-                'type': 'list',
-                'message': f"{game.current_question.text}",
-                'name': 'question',
-                'choices': [
-                    Separator(f"{game.current_round}º Rodada - Pergunta 1/5"),
-                    Separator(),
-                    f"1: {game.current_question.answers[0]}",
-                    f"2: {game.current_question.answers[1]}",
-                    f"3: {game.current_question.answers[2]}",
-                    f"4: {game.current_question.answers[3]}",
-                    Separator(),
-                    Separator(" Prêmio: {}".format(game.prizes[str(game.current_round)]['Acertar'])),
-                ],
-            }
-        ]
-       
         return prompt(question, style=custom_style_1)
     
     '''

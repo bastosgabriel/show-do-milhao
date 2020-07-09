@@ -1,4 +1,5 @@
 import random
+import math
 from view import View
 from question import Question
 
@@ -30,7 +31,10 @@ class Game():
 
         self.current_question = ''
         self.current_round = 1
+        self.current_phase = 1
+        self.current_phase_question = 1
         self.already_asked_questions = []
+        
 
     def run(self):
         """
@@ -49,6 +53,9 @@ class Game():
             # If the answer is correct
             if self.check_answer(user_answer):
                 self.current_round += 1
+                self.current_phase = math.ceil(self.current_round/5)
+                self.current_phase_question = self.current_round - ((self.current_phase - 1) * 5)
+
                 if self.current_round == 17:
                     win_or_loose = 1
                     break
