@@ -11,22 +11,22 @@ class Game():
     '''
     def __init__(self):
         self.prizes = {
-            '1':  {'Acertar': '1 mil',    'Parar': '0 mil', 'Errar': '0'},
-            '2':  {'Acertar': '2 mil',    'Parar': '1 mil', 'Errar': '500'},
-            '3':  {'Acertar': '3 mil',    'Parar': '2 mil', 'Errar': '1'},
-            '4':  {'Acertar': '4 mil',    'Parar': '3 mil', 'Errar': '1.5'},
-            '5':  {'Acertar': '5 mil',    'Parar': '4 mil', 'Errar': '2'},
-            '6':  {'Acertar': '10 mil',   'Parar': '5 mil', 'Errar': '2.5'},
-            '7':  {'Acertar': '20 mil',   'Parar': '10 mil', 'Errar': '5'},
-            '8':  {'Acertar': '30 mil',   'Parar': '20 mil', 'Errar': '10'},
-            '9':  {'Acertar': '40 mil',   'Parar': '30 mil', 'Errar': '15'},
-            '10': {'Acertar': '50 mil',   'Parar': '40 mil', 'Errar': '20'},
-            '11': {'Acertar': '100 mil',  'Parar': '50 mil', 'Errar': '25'},
-            '12': {'Acertar': '200 mil',  'Parar': '100 mil', 'Errar': '50'},
+            '1':  {'Acertar': '1 mil',    'Parar': '0 mil',   'Errar': '0'  },
+            '2':  {'Acertar': '2 mil',    'Parar': '1 mil',   'Errar': '500'},
+            '3':  {'Acertar': '3 mil',    'Parar': '2 mil',   'Errar': '1'  },
+            '4':  {'Acertar': '4 mil',    'Parar': '3 mil',   'Errar': '1.5'},
+            '5':  {'Acertar': '5 mil',    'Parar': '4 mil',   'Errar': '2'  },
+            '6':  {'Acertar': '10 mil',   'Parar': '5 mil',   'Errar': '2.5'},
+            '7':  {'Acertar': '20 mil',   'Parar': '10 mil',  'Errar': '5'  },
+            '8':  {'Acertar': '30 mil',   'Parar': '20 mil',  'Errar': '10' },
+            '9':  {'Acertar': '40 mil',   'Parar': '30 mil',  'Errar': '15' },
+            '10': {'Acertar': '50 mil',   'Parar': '40 mil',  'Errar': '20' },
+            '11': {'Acertar': '100 mil',  'Parar': '50 mil',  'Errar': '25' },
+            '12': {'Acertar': '200 mil',  'Parar': '100 mil', 'Errar': '50' },
             '13': {'Acertar': '300 mil',  'Parar': '200 mil', 'Errar': '100'},
             '14': {'Acertar': '400 mil',  'Parar': '300 mil', 'Errar': '150'},
             '15': {'Acertar': '500 mil',  'Parar': '400 mil', 'Errar': '200'},
-            '16': {'Acertar': '1 MILHÃO', 'Parar': '500 mil', 'Errar': '0'}
+            '16': {'Acertar': '1 MILHÃO', 'Parar': '500 mil', 'Errar': '0'  }
         }
 
         self.current_question = ''
