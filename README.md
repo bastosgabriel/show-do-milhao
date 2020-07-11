@@ -1,3 +1,6 @@
+# Observação importante!
+O script atualmente está funcionando apenas em Linux e MAC.
+
 # Show do Milhão
 
 Show do Milhão para a familia Aguiar! Projeto-desafio da Jovens Gênios.
