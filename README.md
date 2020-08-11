@@ -1,6 +1,6 @@
 # Show do Milhão
 
-Show do Milhão para a familia Aguiar! Projeto-desafio da Jovens Gênios.
+Jogo Show do Milhão usando o console
 
 
 # Instalando pacotes necessários
